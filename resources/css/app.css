@@ -1,11 +1,73 @@
+
+@import '@fontsource-variable/inter';
+@import '@fontsource/poppins/500.css';
+@import '@fontsource/poppins/600.css';
+
 @import 'tailwindcss';
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
-
+/* Custom Theme */
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+
+    /* Brand Colors */
+    --color-brand-navy: #0A1F44;
+    --color-brand-charcoal: #5A5C5D;
+    --color-brand-orange: #E86634;
+    --color-brand-mist: #EDEDED;
+
+    /* Animations */
+    --animate-gear: gear 40s linear infinite;
+    --animate-gear-reverse: gear-reverse 20s linear infinite; /* كان 28s */
+    --animate-marquee: marquee 40s linear infinite; /* حركة الشريط */
+@keyframes marquee { to { transform: translateX(var(--marquee-shift, -25%)); } }
+--animate-progress: progress 7s linear forwards; /* خط التقدم: 7 ثواني للسلايد */
+@keyframes progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+    @keyframes gear {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes gear-reverse {
+        to {
+            transform: rotate(-360deg);
+        }
+    }
+}
+
+/* Alpine.js */
+[x-cloak] {
+    display: none !important;
+}
+
+/* Blueprint Background */
+.bg-blueprint {
+    background-image:
+        linear-gradient(to right, rgb(10 31 68 / 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgb(10 31 68 / 0.06) 1px, transparent 1px);
+
+    background-size: 48px 48px;
+
+    mask-image: radial-gradient(
+        ellipse at 70% 40%,
+        black 30%,
+        transparent 75%
+    );
+}
+
+.js .reveal { /* الحالة الأولية: مخفي وتحت شوية */
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.js .reveal.reveal-left { transform: translateX(-32px); } /* يدخل من الشمال */
+.js .reveal.reveal-scale { transform: scale(0.95); }      /* يكبر تدريجياً */
+.js .reveal.is-visible { opacity: 1; transform: none; }   /* لازم يبقى بعد الاتنين */
+
+@media (prefers-reduced-motion: reduce) { /* احترام تقليل الحركة */
+    .js .reveal, .js .reveal.reveal-left, .js .reveal.reveal-scale {
+        opacity: 1; transform: none; transition: none;
+    }
 }
